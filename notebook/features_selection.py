@@ -5,10 +5,11 @@ import numpy as np
 
 class Features_Selection:
     
-    def __init__(self,X,y,drop = None):
+    def __init__(self,X,y,drop = None,figsize = (12,10)):
         self.X = X
         self.y = y
         self.drop = drop
+        self.figsize = figsize
         
             
     @property
@@ -24,7 +25,7 @@ class Features_Selection:
         
     def corr_matrix_visual(self):
         
-        plt.figure(figsize = (12,10))
+        plt.figure(figsize = self.figsize)
         cor = self.dataset.corr()
         sns.heatmap(cor, annot = True , cmap = 'coolwarm') 
         # plt.cm. then you can any of the color in cmap
@@ -119,7 +120,7 @@ class Features_Selection:
                              
     def features_corr_visual_filter(self,thresh):
         
-        plt.figure(figsize=(10,10))
+        plt.figure(figsize=self.figsize)
         sns.set_style("whitegrid", {"axes.facecolor": ".0"})
         df = self.X.corr()
         mask = df.where((abs(df) >= thresh)).isna()
@@ -134,7 +135,7 @@ class Features_Selection:
         
     def features_corr_with_output_visual_filter(self,thresh):
         
-        plt.figure(figsize=(10,10))
+        plt.figure(figsize=self.figsize)
         sns.set_style("whitegrid", {"axes.facecolor": ".0"})
         df = self.dataset.corr()
         
