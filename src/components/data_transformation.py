@@ -3,9 +3,8 @@ import sys
 sys.path.append(os.path.join(os.getcwd()))
 import pandas as pd
 import numpy as np
-from sklearn.compose import ColumnTransformer
+from sklearn.compose import ColumnTransformer,make_column_selector 
 from sklearn.pipeline import Pipeline
-from sklearn.compose import make_column_selector as selector
 from sklearn.preprocessing import OrdinalEncoder,StandardScaler
 from src.exception import CustomException
 from src.logger import logging
@@ -20,12 +19,10 @@ class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
 
-    def get_data_transformer_obj(self):
+    def get_data_transformer_obj(self,df):
         try:
-            num_features = selector(dtype_exclude="object")
-            cat_features = selector(dtype_include="object")
-            logging.info(f"Categorical Columns : {cat_features}")
-            logging.info(f"Numerical Columns : {num_features}")
+            num_selector = make_column_selector(dtype_exclude="object")
+            cat_selector = make_column_selector(dtype_include="object")
 
             numeric_transformer = Pipeline(
                 steps = [
@@ -39,8 +36,8 @@ class DataTransformation:
         
             preprocessor = ColumnTransformer(
                 transformers = [
-                    ('num', numeric_transformer, num_features),
-                    ('cat', categorical_transformer, cat_features)
+                    ('cat', categorical_transformer, cat_selector),
+                    ('num', numeric_transformer, num_selector)
                     ])
             
             return preprocessor
@@ -56,7 +53,7 @@ class DataTransformation:
             test_df = pd.read_csv(test_path)
             logging.info("Read Train and Test Data for Data Transformation")
 
-            preprocessing_obj = self.get_data_transformer_obj()
+            preprocessing_obj = self.get_data_transformer_obj(train_df)
             logging.info("Obtained Preprocessing Object")
 
             train_df = train_df.dropna()
@@ -71,7 +68,7 @@ class DataTransformation:
             input_feature_train_df = train_df[selected_features]
             target_feature_train_df = train_df[target_column_name]
             input_feature_test_df = test_df[selected_features]
-            target_feature_test_df=test_df[target_column_name]
+            target_feature_test_df = test_df[target_column_name]
             logging.info("Features_Target_Split Done")
 
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
