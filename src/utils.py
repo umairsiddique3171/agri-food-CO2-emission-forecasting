@@ -2,9 +2,11 @@ import pickle
 import sys
 import os
 import json
+import base64
 
 import numpy as np
 import pandas as pd
+import streamlit as st
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score
 
@@ -24,6 +26,16 @@ def save_object(file_path,obj):
         raise CustomException(e,sys)
     
 
+def load_object(path):
+    
+    try : 
+        model = pickle.load(open(path, "rb"))
+        return model
+    
+    except Exception as e: 
+        raise CustomException(e,sys)
+
+
 def load_selected_features(file_path):
 
     try:
@@ -35,7 +47,7 @@ def load_selected_features(file_path):
         raise CustomException(e,sys)
 
 
-def evaluate_models(X_train, y_train,X_test,y_test,models):
+def evaluate_models(X_train,y_train,X_test,y_test,models):
 
     try:
         report = {}
@@ -53,7 +65,7 @@ def evaluate_models(X_train, y_train,X_test,y_test,models):
         raise CustomException(e, sys)
     
     
-def evaluate_models_with_tuning(X_train, y_train,X_test,y_test,models,param):
+def evaluate_models_with_tuning(X_train,y_train,X_test,y_test,models,param):
 
     try:
         report = {}
@@ -88,3 +100,19 @@ def save_report(report,path):
         
     except Exception as e: 
         raise CustomException(e,sys)
+    
+
+def set_background(img_file):
+
+    with open(img_file, "rb") as f:
+        img_data = f.read()
+    b64_encoded = base64.b64encode(img_data).decode()
+    style = f"""
+        <style>
+        .stApp {{
+            background-image: url(data:image/png;base64,{b64_encoded});
+            background-size: cover;
+        }}
+        </style>
+    """
+    st.markdown(style, unsafe_allow_html=True)
