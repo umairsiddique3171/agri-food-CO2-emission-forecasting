@@ -29,7 +29,8 @@ class ModelTrainer:
         self.model_trainer_config = ModelTrainerConfig()
 
     def initiate_model_trainer(self,train_arr,test_arr):
-
+        logging.info("Model Training started")
+        
         try:
             X_train,y_train,X_test,y_test = (
                 train_arr[:,:-1],
@@ -55,12 +56,13 @@ class ModelTrainer:
             best_model = models[best_model_name]
             if best_model_score<0.6:
                 raise CustomException("No best model found")
-            logging.info(f"{best_model_name} : {best_model_score}")
+            logging.info(f"Best Model ({best_model_name} : {best_model_score})")
             save_object(
                 file_path=self.model_trainer_config.trained_model_path,
                 obj=best_model
             )
-            logging.info(f"{best_model_name} saved in artifacts")
+            logging.info(f"{best_model_name} Model saved in artifacts")
+            logging.info("Model Training completed")
             return best_model_score
         
         except Exception as e:

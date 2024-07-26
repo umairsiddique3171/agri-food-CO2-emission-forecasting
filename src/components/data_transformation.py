@@ -47,6 +47,7 @@ class DataTransformation:
             raise CustomException(e,sys)
 
     def initiate_data_transformation(self,train_path,test_path):
+        logging.info("Data Transformation started")
         
         try:
             train_df = pd.read_csv(train_path)
@@ -75,6 +76,7 @@ class DataTransformation:
             logging.info("Numerical Columns Scaled")
             save_object(file_path=self.data_transformation_config.preprocessor_obj_file_path,obj=preprocessing_obj)
             logging.info("Preprocessor Object Saved")
+            logging.info("Data Transformation completed")
             return (
                 train_arr,
                 test_arr,
