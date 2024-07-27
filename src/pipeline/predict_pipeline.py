@@ -88,14 +88,14 @@ class CustomData:
 
         try: 
             custom_data_input_array = np.array([[
-                self.area,self.year,self.savanna_fires ,self.forest_fires,self.crop_residues,
+                self.area,self.year,self.savanna_fires,self.forest_fires,self.crop_residues,
                 self.rice_cultivation,self.drained_organic_soils_C02,self.pesticides_manufacturing,
                 self.food_transport,self.forest_land,self.net_forest_converstion,
                 self.food_household_consumption,self.food_retail,self.on_farm_electricity_use,
                 self.food_packaging,self.agrifood_system_waste_disposal,self.food_processing,
                 self.fertilizers_manufacturing,self.manure_applied_to_soils,self.manure_left_on_pasture,
                 self.fires_in_organic_soils,self.fires_in_humid_tropical_forest,self.on_farm_energy_use,
-                self.rural_population,self.urban_populationn
+                self.rural_population,self.urban_population
             ]])
             selected_features_path = os.path.join("notebook","selected_features.json")
             data_fields_names = load_selected_features(selected_features_path)
