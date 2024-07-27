@@ -33,7 +33,7 @@ st.markdown("""
 
 
 
-# set_background('background_img.jpg')
+set_background(os.path.join(os.getcwd(),'app','background_img.jpg'))
 
 st.markdown("<h1 style='text-align:center'>Agri Food Emissions Prediction</h1>",unsafe_allow_html=True)
 
